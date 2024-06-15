@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "username": "SDOO",
+        "name": "Scooby Doo",
+        "email": "scooby.doo@example.com",
+        "salary": 2000
+    },
+    {
+        "id": 2,
+        "username": "SROGERS",
+        "name": "Shaggy Rogers",
+        "email": "shaggy.rogers@example.com",
+        "salary": 3000
+    },
+    {
+        "id": 3,
+        "username": "DDUCK",
+        "name": "Donald Duck",
+        "email": "donald.duck@example.com",
+        "salary": 4000
+    },
+    {
+        "id": 4,
+        "username": "example_username",
+        "name": "example_name",
+        "email": "exampleName.exampleSurname@example.com",
+        "salary": 9000
+    }
+]
