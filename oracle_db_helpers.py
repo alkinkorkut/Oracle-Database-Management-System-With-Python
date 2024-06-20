@@ -9,7 +9,28 @@ USERNAME = "username"
 PASSWORD = "password"
 DSN = "dsn"
 
+def is_connection_healthy(connection):
+    """
+
+    This function checks and returns a boolean value indicating whether the health status of connection.
+    If False, a new connection should be established. 
+    In order to fully check a connection's health, connection.ping() should be used. It performs a round-trip to the database.
+
+    Parameters:
+    connection (oracledb.Connection): An Oracle database connection object
+
+    """
+    if connection.is_healthy():
+        print("Connection is healthy")
+    else:
+        print("Connection is not healthy. Unstable connection. Please check the database and network settings.")
+
 def get_version():
+    """
+
+    Prints the version of the python-oracledb library and the Oracle Database version.
+
+    """
     connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     print("Version of python-oracledb library: ",oracledb.version)
     print("Version of Oracle Database: ", connection.version)
