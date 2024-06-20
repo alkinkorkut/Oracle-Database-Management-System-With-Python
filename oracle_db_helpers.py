@@ -9,6 +9,12 @@ USERNAME = "username"
 PASSWORD = "password"
 DSN = "dsn"
 
+def get_version():
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
+    print("Version of python-oracledb library: ",oracledb.version)
+    print("Version of Oracle Database: ", connection.version)
+    connection.close()
+
 # CRUD Operations for users (Create, Read, Update, Delete)
 
 def create_user(id, username, name, email, salary):
