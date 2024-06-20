@@ -103,8 +103,10 @@ def create_user(id, username, name, email, salary):
     """
     connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO users (id, username, name, email, salary) VALUES (:id, :username, :name, :email, :salary)",
-                   id=id, username=username, name=name, email=email, salary=salary)
+    cursor.execute("""
+                    INSERT INTO users (id, username, name, email, salary) 
+                    VALUES (:id, :username, :name, :email, :salary)
+                    """, {"id": id, "username": username, "name": name, "email": email, "salary": salary})
     connection.commit()
     cursor.close()
     connection.close()
@@ -141,8 +143,11 @@ def update_user(id, username, name, email, salary):
     """
     connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
-    cursor.execute("UPDATE users SET username=:username, name=:name, email=:email, salary=:salary WHERE id=:id",
-                   username=username, name=name, email=email, salary=salary, id=id)
+    cursor.execute("""
+                    UPDATE users 
+                    SET username=:username, name=:name, email=:email, salary=:salary 
+                    WHERE id=:id
+                    """, {"username": username, "name": name, "email": email, "salary": salary, "id": id})
     connection.commit()
     cursor.close()
     connection.close()
@@ -159,7 +164,7 @@ def delete_user(id):
     """
     connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
-    cursor.execute("DELETE FROM users WHERE id=:id", id=id)
+    cursor.execute("DELETE FROM users WHERE id=:id", {"id": id})
     connection.commit()
     cursor.close()
     connection.close()
@@ -181,7 +186,7 @@ def get_user_by_id(id):
     cursor = connection.cursor()
 
     try: 
-        cursor.execute("SELECT * FROM users WHERE id=:id", id=id)
+        cursor.execute("SELECT * FROM users WHERE id=:id", {"id": id})
         user = cursor.fetchone()
 
         if user: 
@@ -222,7 +227,7 @@ def get_user_by_username(username):
     cursor = connection.cursor()
 
     try:
-        cursor.execute("SELECT * FROM users WHERE username=:username", username=username)
+        cursor.execute("SELECT * FROM users WHERE username=:username", {"username": username})
         user = cursor.fetchone()
 
         if user:
