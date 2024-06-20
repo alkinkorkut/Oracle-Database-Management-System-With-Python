@@ -1,4 +1,4 @@
-import cx_Oracle
+import oracledb
 
 # Helpers for working with Oracle database
 
@@ -25,7 +25,7 @@ def create_user(id, username, name, email, salary):
     salary (float): Salary
 
     """
-    connection = cx_Oracle.connect(USERNAME, PASSWORD, DSN)
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
     cursor.execute("INSERT INTO users (id, username, name, email, salary) VALUES (:id, :username, :name, :email, :salary)",
                    id=id, username=username, name=name, email=email, salary=salary)
@@ -40,7 +40,7 @@ def read_users():
     Query and retrieve all records from the users table.
 
     """
-    connection = cx_Oracle.connect(USERNAME, PASSWORD, DSN) 
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN) 
     cursor = connection.cursor() 
     cursor.execute("SELECT * FROM users") 
     records = cursor.fetchall()
@@ -63,7 +63,7 @@ def update_user(id, username, name, email, salary):
     salary (float): Salary
 
     """
-    connection = cx_Oracle.connect(USERNAME, PASSWORD, DSN)
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
     cursor.execute("UPDATE users SET username=:username, name=:name, email=:email, salary=:salary WHERE id=:id",
                    username=username, name=name, email=email, salary=salary, id=id)
@@ -81,7 +81,7 @@ def delete_user(id):
     id (int): User ID
 
     """
-    connection = cx_Oracle.connect(USERNAME, PASSWORD, DSN)
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
     cursor.execute("DELETE FROM users WHERE id=:id", id=id)
     connection.commit()
@@ -101,7 +101,7 @@ def get_user_by_id(id):
     dict: A dictionary containing the user information (id, username, name, email, salary)
 
     """
-    connection = cx_Oracle.connect(USERNAME, PASSWORD, DSN)
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
 
     try: 
@@ -121,7 +121,7 @@ def get_user_by_id(id):
             print("User not found with ID {id}")
             return None
     
-    except cx_Oracle.DatabaseError as error:
+    except oracledb.DatabaseError as error:
         print("Error occurred while fetching the user:", error)
         return None
 
@@ -142,7 +142,7 @@ def get_user_by_username(username):
     dict: A dictionary containing the user information (id, username, name, email, salary)
 
     """
-    connection = cx_Oracle.connect(USERNAME, PASSWORD, DSN)
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
     cursor = connection.cursor()
 
     try:
@@ -162,7 +162,7 @@ def get_user_by_username(username):
             print("User not found with username {username}")
             return None
 
-    except cx_Oracle.DatabaseError as error:
+    except oracledb.DatabaseError as error:
         print("Error occurred while fetching the user:", error)
         return None
 
