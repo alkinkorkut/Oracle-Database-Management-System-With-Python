@@ -9,12 +9,61 @@ USERNAME = "username"
 PASSWORD = "password"
 DSN = "dsn"
 
+# A simple example of a transaction 
+def update_salary(id, salary):
+    """
+
+    Update the salary of a user with the given id.
+
+    Parameters:
+    id (int): User ID
+    salary (float): New salary value
+
+    """
+    connection = oracledb.connect(USERNAME, PASSWORD, DSN)
+    cursor = connection.cursor()
+
+    try: 
+        # Fetch the current salary in case of logging purposes
+        cursor.execute("SELECT salary FROM users WHERE id=:id", {"id": id})
+        current_salary = cursor.fetchone()[0]
+
+        # Update the salary
+        cursor.execute("UPDATE users SET salary=:salary WHERE id=:id", {"salary": salary, "id": id})
+
+        # Savepoint before committing
+        savepoint = connection.savepoint("SavepointBeforeCommit")
+
+        # A condition to check if the new salary is lower than the current salary
+        if salary < current_salary:
+            # If the new salary is lower than current salary, raise an exception
+            raise ValueError("New salary cannot be lower than the current salary")
+
+        # Commit the transaction
+        connection.commit()
+        print(f"Transaction committed successfully. Salary updated for user {id} with the value of {salary}.")
+
+    except ValueError as error:
+        print("Value error occurred while updating the salary:", error)
+        connection.rollback(savepoint)
+        print("Transaction rolled back to savepoint due to value error.")
+
+    except oracledb.DatabaseError as error:
+        print("Database error occurred while updating the salary:", error)
+        connection.rollback()
+        print("Transaction rolled back due to database error.")
+
+    finally: 
+        cursor.close()
+        connection.close()
+        
+
 def is_connection_healthy(connection):
     """
 
     This function checks and returns a boolean value indicating whether the health status of connection.
     If False, a new connection should be established. 
-    In order to fully check a connection's health, connection.ping() should be used. It performs a round-trip to the database.
+    In order to fully check a connection's health, Connection.ping() should be used. It performs a round-trip to the database.
 
     Parameters:
     connection (oracledb.Connection): An Oracle database connection object
